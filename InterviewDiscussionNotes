@@ -1,0 +1,87 @@
+workflow engine
+
+1. console log task
+2. http call with a message and return status
+3. sleep for a while -> configurable by client input
+
+combining and mixing matching these tasks
+
+
+10 tasks at max per client
+One client for now -> can add more sessions while current is running
+
+
+In one session -> 10 tasks -> serial order maintained
+Multiple sessions can be parrallel
+
+Tasks are independent
+Session terminates if any one task fails -> no retry
+Once a session has started it cannot be edited
+
+
+API level
+Call from main function
+
+
+
+We are implementing a workflow engine in Java in the current project.
+
+
+Functional requirements
+
+Task submission
+- create a task based on input - 3 options available
+- create a session of at max 10 task
+- one user can submit another session while one in progress
+- if a session fails all pending tasks fail, all the finished tasks remain as is
+- multiple sessions can run in parallel optimising resource use
+- in a single session execute in the order of task submission
+
+
+- user can fetch the current status of a session
+- user cannot cancel an already started session
+
+
+
+
+
+
+
+One workflow in sleep should allow the SessionManager to use the thread for other pending tasks. Do not block a thread for a sleeping task, it should be picked up again after the sleep is complete.
+Make processes in the thread pool async and give back control while keeping the session sequential
+
+
+
+
+
+Non functional requirements
+- one user only
+- limited to 10 tasks per session
+
+
+The functions to submit and to search can be called from main, and the input from client is terminal based or JSON based. Do not add a UI. Do not assume if there are contradictions or ambguity, pause to ask.
+
+
+
+Implement Task, TaskResult, WorkflowEngine and Workflow
+Keep the implementation simple
+DO not introduce frameworks or unnecessary abstractions
+
+
+
+
+
+Note:
+1. we need to add docs -> checking
+2. we need to add tests
+3. Add Readme on how to run: deployment and build pipeline setup and add class diagram and flow with mermaid diagrams
+5. Schedulign logic pending
+
+
+
+Identify and call out, do not change code:
+bugs
+violations of intended architecture
+missing error handling
+test for gaps in requirement
+call out bottlenecks at 10 times the scale
